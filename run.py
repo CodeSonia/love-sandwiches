@@ -45,13 +45,13 @@ def validate_data(values):
     # Try statement will run if there are no errors
     # and data is valid
     try:
-        # Check if the values are not 6 values
+        [int(value) for value in values]
+        # Check if th1e values are not 6 values
         if len(values) != 6:
             # Except statement will print an error to the
             # terminal
             raise ValueError(
-                f"Exactly 6 values required, you provided {len(values)}"
-            )
+                f"Exactly 6 values required, you provided {len(values)}")        
     except ValueError as e:
         print(f"Invalid data: {e}, please try again.\n")
 
