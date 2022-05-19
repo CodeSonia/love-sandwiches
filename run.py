@@ -102,7 +102,15 @@ def calculate_surplus_data(sales_row):
     
     # Access the last row of the stock sheet.
     stock_row = stock[-1]
-    print(stock_row)
+    
+    # Create an empty list to add the surplus data
+    surplus_data = []
+    # Use a zip() to iterate 2 lists
+    for stock, sales in zip(stock_row, sales_row):
+        surplus = int(stock) - sales
+        surplus_data.append(surplus)
+        
+    return surplus_data
 
 # It is common practice to wrap the main function calls
 # of a program within a function called main:
@@ -117,7 +125,8 @@ def main():
     # into integers
     sales_data = [int(num) for num in data]
     update_sales_worksheet(sales_data)
-    calculate_surplus_data(sales_data)
+    new_surplus_data = calculate_surplus_data(sales_data)
+    print(new_surplus_data)
 
 
 print("Welcome to Love Sandwiches Data Automation")
