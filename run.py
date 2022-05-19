@@ -73,11 +73,21 @@ def update_sales_worksheet(data):
     Update sales worksheet, add new row with the list data provided.
     """
     print("Updating sales worksheet...\n")
+    
+    # Access our sales worksheet from our Google Sheet
+    # Use gspead worksheet(). The value provided
+    # is the name of the worksheet from our spreadsheet.
     sales_worksheet = SHEET.worksheet("sales")
+    
+    # Use another GSPREAD function: append()
+    # This will add our data to the worksheet.
     sales_worksheet.append_row(data)
     print("Sales worksheet updates successfully.\n")
 
 
 data = get_sales_data()
+
+# Creates a list comprehension to convert these values
+# into integers
 sales_data = [int(num) for num in data]
 update_sales_worksheet(sales_data)
