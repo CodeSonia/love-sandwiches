@@ -23,8 +23,10 @@ SHEET = GSPREAD_CLIENT.open('love_sandwiches')
 def get_sales_data():
     """
     Get sales figures input from the user
-    """
-    
+    Run a while loop to collect a valid string of data from the user
+    via the terminal, which must be a string of 6 numbers separated
+    by commas. The loop with repeatedly request data, until it is valid.
+    """  
     # Runs a while loop that asks the user for data
     while True:
         print("Please enter sales data from the last market.")
@@ -37,37 +39,45 @@ def get_sales_data():
         # the list
         sales_data = data_str.split(",")
         validate_data(sales_data)
-        
         # Use a if statement to call our validate data
         # function
         if validate_data(sales_data):
             print("Data is valid")
             break
-        
     return sales_data
-        
+
 
 def validate_data(values):
     """
-    Inside the try, converts all the string values into integers.
+    Inside the try, converts all string values into integers.
     Raises ValueError if strings cannot be converted into int,
     or if there aren't exactly 6 values.
     """
-    # Try statement will run if there are no errors
-    # and data is valid
     try:
+        # Try statement will run if there are no errors
+        # and data is valid
         [int(value) for value in values]
-        # Check if th1e values are not 6 values
         if len(values) != 6:
-            # Except statement will print an error to the
-            # terminal
             raise ValueError(
-                f"Exactly 6 values required, you provided {len(values)}")        
+                f"Exactly 6 values required, you provided {len(values)}"
+            )
     except ValueError as e:
         print(f"Invalid data: {e}, please try again.\n")
         return False
-    
+
     return True
 
 
+def update_sales_worksheet(data):
+    """
+    Update sales worksheet, add new row with the list data provided.
+    """
+    print("Updating sales worksheet...\n")
+    sales_worksheet = SHEET.worksheet("sales")
+    sales_worksheet.append_row(data)
+    print("Sales worksheet updates successfully.\n")
+
+
 data = get_sales_data()
+sales_data = [int(num) for num in data]
+update_sales_worksheet(sales_data)
