@@ -5,6 +5,7 @@ import gspread
 # Imports the Credentials class which is part of the
 # service account function in the google auth libray
 from google.oauth2.service_account import Credentials
+from pprint import pprint
 
 # All CAPS variable = constant variable
 SCOPE = [
@@ -83,11 +84,41 @@ def update_sales_worksheet(data):
     # This will add our data to the worksheet.
     sales_worksheet.append_row(data)
     print("Sales worksheet updates successfully.\n")
+    
+
+def calculate_surplus_data(sales_row):
+    """
+    Compare sales with stock and calculate the surplus for each item type.
+    
+    The surplus is defined as the sales figure subtracted from the stock:
+    - Positive surplus indicates waste
+    - Negative surplus indicates extra made when stock was sold out.
+    """
+    print("Calculating surplus data...\n")
+    
+    # Get the stock worksheet. 
+    # Use gspread get_all_values to fetch the data
+    stock = SHEET.worksheet("stock").get_all_values()
+    
+    # Access the last row of the stock sheet.
+    stock_row = stock[-1]
+    print(stock_row)
+
+# It is common practice to wrap the main function calls
+# of a program within a function called main:
 
 
-data = get_sales_data()
+def main():
+    """
+    Run all program functions
+    """
+    data = get_sales_data()
+    # Creates a list comprehension to convert these values
+    # into integers
+    sales_data = [int(num) for num in data]
+    update_sales_worksheet(sales_data)
+    calculate_surplus_data(sales_data)
 
-# Creates a list comprehension to convert these values
-# into integers
-sales_data = [int(num) for num in data]
-update_sales_worksheet(sales_data)
+
+print("Welcome to Love Sandwiches Data Automation")
+main()
